@@ -7,6 +7,8 @@ This module implements the class that deals with graphics.
 """
 
 import os.path
+import pathlib2
+import platform
 
 from .utils import fix_filename, make_temp_dir, NoEscape, escape_latex
 from .base_classes import UnsafeCommand, Float
@@ -58,9 +60,13 @@ class Figure(Float):
         import matplotlib.pyplot as plt
 
         tmp_path = make_temp_dir()
-
-        filename = os.path.join(tmp_path, str(uuid.uuid4()) + '.pdf')
-
+        
+        if "Windows" in platform.system():
+            filename = os.path.join(tmp_path, str(uuid.uuid4()) + '.pdf')
+            filename = pathlib2.PurePath(filename).as_posix()
+        else:
+            filename = os.path.join(tmp_path, str(uuid.uuid4()) + '.pdf')
+        
         plt.savefig(filename, *args, **kwargs)
 
         return filename
