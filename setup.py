@@ -34,6 +34,9 @@ else:
     source_dir = 'python2_source'
     dependencies.append('future>=0.15.2')
 
+if sys.version_info < (3, 4):
+    dependencies.append('pathlib2')
+
 PY2_CONVERTED = False
 
 
